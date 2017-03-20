@@ -26,7 +26,7 @@ def help():
     version="Extract_SAM "+__version__
     description=("Script to extract all unmapped/mapped reads from the BAM file and write to reads_1.fastq, reads_2.fastq and reads_unpaired.fastq. For bug reports, suggestions or questions mail to Mitul Patel: Mitul.Patel@immunocore.com")
     #author=__author__+__email__
-    usage = "\n" + usage1 + "\n" + usage2
+    
     parser = OptionParser(usage,version=version,description=description,formatter=help_formatter)
 
     # Main Input files
