@@ -22,29 +22,22 @@ def help():
     '''Display help message if no arguments provided'''
     help_formatter = IndentedHelpFormatter(indent_increment=2, width=100)
 
-    usage = "%s --in <filename> --outbase <filebase>" % sys.argv[0]
-    version="Extract_SAM "+__version__
-    description=("Script to extract all unmapped/mapped reads from the BAM file and write to reads_1.fastq, reads_2.fastq and reads_unpaired.fastq. For bug reports, suggestions or questions mail to Mitul Patel: Mitul.Patel@immunocore.com")
+    usage1 = "To extract unmapped reads:\n\t samtools view -f 0x4 mappingFILE.bam | %s --outbase <filebase>" % sys.argv[0]
+    usage2 = "To extract mapped reads:\n\t samtools view -F 0x4 mappingFILE.bam | %s --outbase <filebase>" % sys.argv[0]
+    version="Extract_unmapped_SAM "+__version__
+    description=("Script to extract all unmapped reads from the BAM file and write to reads_1.fastq, reads_2.fastq and reads_unpaired.fastq. For bug reports, suggestions or questions mail to Mitul Patel: Mitul.Patel@immunocore.com")
     #author=__author__+__email__
     usage = "\n" + usage1 + "\n" + usage2
     parser = OptionParser(usage,version=version,description=description,formatter=help_formatter)
 
-    # Main Input files
-    group1 = OptionGroup(parser, "Inputs",
+    # Main Output files
+    group1 = OptionGroup(parser, "Outputs",
                 '')
-    group1.add_option('-i', '--in', action="store", dest='inFile',
-                help='Read mapping file in BAM format [MANDATORY].')
+    group1.add_option('-o', '--outbase', action="store", dest='outFile',
+                help='Base name for output files in Fastq format [MANDATORY].')
     parser.add_option_group(group1)
 
-    # Main Output files
-    group2 = OptionGroup(parser, "Outputs",
-                '')
-    group2.add_option('-o', '--outbase', action="store", dest='outFile',
-                help='Base name for output files in Fastq format [MANDATORY].')
-    parser.add_option_group(group2)
-
-
-    if(len(sys.argv) <= 2):
+    if(len(sys.argv) <= 1):
         parser.print_help()
         sys.exit(1)
     else:
@@ -61,10 +54,7 @@ def main():
     
 def Extractor(options):
 
-    csvFILE = open(options.inFile)
-
-    bamFILE = csv.reader(csvFILE, dialect="excel-tab")
-
+    bamFILE = csv.reader(sys.stdin, dialect="excel-tab")
     outbase = options.outFile
 
     PE1 = open("%s_1.fastq" % outbase, "w")
