@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 """
-This script will extract all unmapped reads from the BAM file and write to reads_1.fastq, reads_2.fastq and reads.unpaired.fastq.
+This script will extract all unmapped reads from the BAM file (sorted by readnames so the read pairs are next to each other: samtools sort -n file.bam file.n.sorted) and write to reads_1.fastq, reads_2.fastq and reads.unpaired.fastq.
 """
 
 __author__ = 'Mitul Patel'
